@@ -58,6 +58,7 @@ function createTaskItem(task) {
   taskList.appendChild(taskItem);
   deleteTask(taskItem);
   taskCompleted(taskItem, task);
+  editTask(taskItem, task);
 }
 
 function taskCompleted(taskItem, task) {
@@ -80,5 +81,23 @@ function deleteTask(taskItem) {
     tasks.splice(index, 1);
     taskList.removeChild(taskItem);
     saveTasks();
+  });
+}
+
+function editTask(taskItem, task) {
+  const editButton = document.createElement("button");
+  editButton.textContent = "Edit";
+  editButton.classList.add("edit-button");
+  taskItem.appendChild(editButton);
+  editButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const newTaskText = prompt("Edit task:", task.text);
+    if (newTaskText !== null && newTaskText.trim() !== "") {
+      task.text = newTaskText.trim();
+      taskItem.textContent = task.text;
+      deleteTask(taskItem);
+      taskItem.appendChild(editButton);
+      saveTasks();
+    }
   });
 }
